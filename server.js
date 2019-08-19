@@ -1,5 +1,5 @@
 //8/24/19 homework
-// Dependencies
+// DEPENDENCIES
 var express = require("express");
 var mongojs = require("mongojs");
 var axios = require("axios");
@@ -21,7 +21,7 @@ app.use(express.static("public"));
 // If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 mongoose.connect(MONGODB_URI);
-//{ useNewUrlParser: true }
+//mongoose.connect({ useNewUrlParser: true });
 
 // Database configuration
 var databaseUrl = "scraper";
@@ -33,7 +33,7 @@ var db = mongojs(databaseUrl, collections);
   console.log("Database Error:", error);
 });
 
-// Default route  - Works
+// Default route  - if no index file. Works
   app.get("/", function(req, res) {
   res.send("Hey Y'all");
   console.log("default route");
@@ -57,20 +57,22 @@ app.get("/all", function(req, res) {
 
 // Scrape data from one site and place it into the mongodb db
 app.get("/scrape", function(req, res) {
-  axios.get("https://www.theonion.com/").then(function(response) {
+  axios.get("https://www.theonion.com/c/news-in-brief").then(function(response) {
     // Load the html body from axios into cheerio
     console.log("inside axios.get");
     var $ = cheerio.load(response.data);
       // For each element with the class used
-      $(".cw4lnv-5").each(function(i, element) {
-      // Save the text and href of each link enclosed in the current element
-      var headline = $(element).children("a").text();
-      console.log("headline = " + headline);
-      var url = $(element).children("a").attr("href");
+      $("article").each(function(i, element) {
+      // Save the text and href of each link enclosed in the current element"
+      // start with empty result object
+      var result = {};
+      console.log("result = " + result);
+      var headline = $(element).find("h1").text();
+      var url = $(element).find("a").last().attr("href");
       //var img = $(element).children("a").attr("srcset");
       //var img = $(element).children("a").find("img").attr("srcset");
-      //var img = $(element).find("a").find("img").attr("srcset").split(",")[0].split(" ")[0];
-        console.log("scraped stuff " + "HEADLINE: " + headline + " STORY URL: " + url);
+      var img = $(element).find("img").attr("srcset");
+        console.log("scraped stuff " + "HEADLINE: " + headline + " STORY URL: " + url + " IMAGE: " + img);
       // If this found element had both a title and a link
       if (headline && url) {
         // Insert the data in the scrapedData db
