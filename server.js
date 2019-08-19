@@ -10,6 +10,18 @@ var logger = require("morgan");
 
 // Initialize Express
 var app = express();
+app.use(logger("dev"));
+
+// Parse request body as JSON
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+// Make public a static folder
+app.use(express.static("public"));
+
+// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+mongoose.connect(MONGODB_URI);
+//{ useNewUrlParser: true }
 
 // Database configuration
 var databaseUrl = "scraper";
@@ -82,10 +94,10 @@ app.get("/scrape", function(req, res) {
   });
 
   // Send a "Scrape Complete" message to the browser
-  res.send("Scrape Complete");
+  res.send("Scrape could be Complete");
 });
 
 // Listen on port 3000
 app.listen(3000, function() {
-  console.log("App running on port 3000!");
+  console.log("App running on port 3000");
 });
