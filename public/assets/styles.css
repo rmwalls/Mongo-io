@@ -1,0 +1,50 @@
+body {
+    text-align: center;
+    font-family: 'Abril Fatface', cursive;
+    background-image: url("images/onions.jpg");
+  }
+  h1 {
+    font-size: 48px;
+    color: purple;
+    background-color: white;
+  }
+  .delete {
+    margin-left: 20px;
+    color: red;
+    cursor: pointer;
+    text-align: right;
+  }
+  input {
+    width: 400px;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 42px;
+    background-color: antiquewhite;
+  }
+  textarea {
+    width: 400px;
+    height: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 24px;
+    background-color: antiquewhite;
+
+  }
+  .data-title {
+    cursor: pointer;
+    font-size: 24px;
+  }
+  #results {
+    width: 400px;
+    height: 200px;
+    overflow: auto;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: antiquewhite;
+  }
+  #action-button {
+    display: inline-block;
+  }
+  #buttons {
+    margin: 20px;

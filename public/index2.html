@@ -2,64 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="/assets/css/style.css" type="text/css" />
   <link href="https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap" rel="stylesheet">
-  <title>Mongo/Cheerio Scraping from The Onion</title>
+  <title>Mongo/Cheerio Scraping from The Big Lying Onion</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <style media="screen">
-    body {
-      text-align: center;
-      font-family: 'Abril Fatface', cursive;
-      background-image: url("../assets/images/onions.jpg");
-    }
-    h1 {
-      font-size: 50px;
-      color: purple;
-      background-color: white;
-    }
-    .delete {
-      margin-left: 20px;
-      color: red;
-      cursor: pointer;
-      text-align: right;
-    }
-    input {
-      width: 400px;
-      height: 50px;
-      margin-left: auto;
-      margin-right: auto;
-      font-size: 42px;
-      background-color: antiquewhite;
-    }
-    textarea {
-      width: 400px;
-      height: 400px;
-      margin-left: auto;
-      margin-right: auto;
-      font-size: 24px;
-      background-color: antiquewhite;
-
-    }
-    .data-title {
-      cursor: pointer;
-      font-size: 24px;
-    }
-    #results {
-      width: 400px;
-      height: 200px;
-      overflow: auto;
-      margin-left: auto;
-      margin-right: auto;
-      background-color: antiquewhite;
-    }
-    #action-button {
-      display: inline-block;
-    }
-    #buttons {
-      margin: 20px;
-    }
-  </style>
 </head>
   <body>
     <!-- Navbar -->
@@ -82,20 +28,15 @@
         </ul>
       </div>
     </nav>
-    <h1>Mongo/Cheerio Scraping from the Onion</h1>
-
-
-
-
-
+    <h1>Mongo/Cheerio Scraping from <img src="/assets/images/theOnion.jpg"></h1>
 
 
     <div id="user-input">
-        <p>Title</p>
-        <input type="text" id="title" />
+      <p>Title</p>
+      <input type="text" id="title" />
       <br>
-        <p>Note</p>
-        <textarea id="note"></textarea>
+      <p>Note</p>
+      <textarea id="note"></textarea>
       <div id="buttons">
         <div id="action-button">
           <button id="make-new">Submit</button>
@@ -106,6 +47,7 @@
 
     <div id="results"></div>
     <script src="app.js"></script>
+    <link rel="stylesheet" href="/assets/styles.css" type="text/css" />
      <!-- making the hamburger work -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
   integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
