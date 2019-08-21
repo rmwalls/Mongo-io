@@ -8,12 +8,29 @@ var mongoose = require("mongoose");
 var exphbs = require("express-handlebars");
 var logger = require("morgan");
 
-// Import the routes
-require("./config/routes.js")
-
-// Initialize Express
+// Initialize Express 
 var app = express();
 app.use(logger("dev"));
+
+console.log("line 15 server.js");
+
+// express router
+var router = express.Router();
+
+// // If deployed, use the deployed database. Otherwise use the local database
+// var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/articlescraper";
+// //mongoose.connect(MONGODB_URI);
+// mongoose.connect("mongodb://localhost/articlescraper", { useNewUrlParser: true });
+
+// // Database configuration
+// var databaseUrl = "articlescraper";
+// var collections = ["scrapedData"];
+
+// // Hook mongojs configuration to the db variable
+// var db = mongojs(databaseUrl, collections);
+//   db.on("error", function(error) {
+//   console.log("Database Error:", error);
+// });
 
 // Parse request body as JSON
 app.use(express.urlencoded({ extended: true }));
@@ -24,26 +41,12 @@ app.use(express.static("public"));
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-app.get("/", function(req, res) {
-  res.render("onionScraping");
-})
+app.use(router);
 
+// Import the routes
+require("./config/routes.js")(app);
 
-// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
-mongoose.connect(MONGODB_URI);
-//mongoose.connect({ useNewUrlParser: true });
-
-// Database configuration
-var databaseUrl = "scraper";
-var collections = ["scrapedData"];
-
-// Hook mongojs configuration to the db variable
-var db = mongojs(databaseUrl, collections);
-  db.on("error", function(error) {
-  console.log("Database Error:", error);
-});
-
+console.log("line 49 server.js")
 
 // Listen on port 3000
 app.listen(3000, function() {

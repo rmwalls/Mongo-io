@@ -1,22 +1,37 @@
 // This file handles the routes for the Articles
 // DEPENDENCIES
 var express = require("express");
-var db = require("../models");
+var mongojs = require("mongojs");
 var axios = require("axios");
 var cheerio = require("cheerio");
-var db = require("../models");
+var mongoose = require("mongoose");
+var exphbs = require("express-handlebars");
+var logger = require("morgan");
+console.log("line 10 routes.js")
 
-// Initialize Express
-//var app = express();
+
+// If deployed, use the deployed database. Otherwise use the local database
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/articlescraper";
+//mongoose.connect(MONGODB_URI);
+mongoose.connect("mongodb://localhost/articlescraper", { useNewUrlParser: true });
+
+// Database configuration
+var databaseUrl = "articlescraper";
+var collections = ["scrapedData"];
+
+// Hook mongojs configuration to the db variable
+var db = mongojs(databaseUrl, collections);
+  db.on("error", function(error) {
+  console.log("Database Error:", error);
+});
 
 //articles array to get items from
-var articles = [];
+//var articles = [];
 
-module.exports=function(app){
-    // Default route  - if no index file. Works
+module.exports = function(app) {
+    // Default route 
     app.get("/", function(req, res) {
-        res.send("Hey Y'all");
-        console.log("default route");
+        res.render("onionScraping");
     });
   
   // Retrieve data from the db -
@@ -49,9 +64,7 @@ module.exports=function(app){
         console.log("result = " + result);
         var headline = $(element).find("h1").text();
         var url = $(element).find("a").last().attr("href");
-        //var img = $(element).children("a").attr("srcset");
-        //var img = $(element).children("a").find("img").attr("srcset");
-        var img = $(element).find("img").attr("srcset");
+        var img = $('img').attr("srcset");
           console.log("scraped stuff " + "HEADLINE: " + headline + " STORY URL: " + url + " IMAGE: " + img);
         // If this found element had both a title and a link
         if (headline && url) {
