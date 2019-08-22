@@ -31,8 +31,6 @@ module.exports = function(app) {
       // Retrieve articles from db
       db.scrapedData.find({}, function(err, scrapedData) {
         var hbsObj = {scrapedData};
-        //console.log("scraped data = " + scrapedData)
-        //console.log(hbsObj);
       res.render("onionScraping", hbsObj)
       console.log("data returned from db");
     });
@@ -42,14 +40,18 @@ module.exports = function(app) {
     axios.get("https://www.theonion.com/c/news-in-brief").then(function(response) {
       console.log("inside axios.get");
       const $ = cheerio.load(response.data); // Load the html body from axios into cheerio
-       
+
       // Save the headline and href of each article
       $("article").each(function(i, element) { 
         const result = {}; // start with empty result object
         const headline = $(element).find("h1").text();
         const url = $(element).find("a").last().attr("href");
         const img = $('img').attr("srcset");
-          console.log("scraped stuff " + "HEADLINE: " + headline + " STORY URL: " + url + " IMAGE: " + img);
+        const str = img;
+        const words = str.split(' ');
+        console.log(words[0]);
+
+        //console.log("scraped stuff " + "HEADLINE: " + headline + " STORY URL: " + url + " IMAGE: " + img);
         // If this found element had both a title and a link
         if (headline && url) {
           // Insert the data in the scrapedData db
