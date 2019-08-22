@@ -8,6 +8,13 @@ body {
     color: purple;
     background-color: white;
   }
+  .panel {
+    text-align: left;
+    background-color: darkgray;
+    width: 80%;
+    margin-left: 100px;
+  }
+
   .delete {
     margin-left: 20px;
     color: red;
@@ -48,3 +55,4 @@ body {
   }
   #buttons {
     margin: 20px;
+  }
