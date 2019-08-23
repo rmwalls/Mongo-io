@@ -9,7 +9,6 @@ const exphbs = require("express-handlebars");
 const logger = require("morgan");
 console.log("line 10 routes.js")
 
-
 // If deployed, use the deployed database. Otherwise use the local database
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/articlescraper";
 //mongoose.connect(MONGODB_URI);
@@ -26,14 +25,14 @@ const db = mongojs(databaseUrl, collections);
 });
 
 module.exports = function(app) {
-    // Default route 
-    app.get("/", function(req, res) {
-      // Retrieve articles from db
-      db.scrapedData.find({}, function(err, scrapedData) {
-        var hbsObj = {scrapedData};
+  // Default route 
+  app.get("/", function(req, res) {
+    // Retrieve articles from db
+    db.scrapedData.find({}, function(err, scrapedData) {
+      var hbsObj = {scrapedData};
       res.render("onionScraping", hbsObj)
       console.log("data returned from db");
-    });
+    }); //end find
   
   // Scrape data from The Onion and save it into the mongo db
   app.get("/scrape", function(req, res) {
@@ -46,12 +45,12 @@ module.exports = function(app) {
         const result = {}; // start with empty result object
         const headline = $(element).find("h1").text();
         const url = $(element).find("a").last().attr("href");
-        const img = $('img').attr("srcset");
-        const str = img;
-        const words = str.split(' ');
-        console.log(words[0]);
+        //const img = $(element).find('img').attr("srcset");
+        //const str = img;
+        //const words = str.split(' ');
+        //console.log(words[0]);
 
-        //console.log("scraped stuff " + "HEADLINE: " + headline + " STORY URL: " + url + " IMAGE: " + img);
+        console.log("scraped stuff " + "HEADLINE: " + headline + " STORY URL: " + url);
         // If this found element had both a title and a link
         if (headline && url) {
           // Insert the data in the scrapedData db
@@ -70,10 +69,19 @@ module.exports = function(app) {
               console.log("data inserted into DB" + inserted);
             }
           });
-        }
+        } // end top if
       });
-    });
+    });  //end axios get
   
     // Send a "Scrape Complete" message to the browser
     res.send("Scrape could be Complete");
-  })})}
+  }) //end of scrape route
+
+
+  //Saved article route
+  app.get("/saved", function(req, res) {
+    res.render("saved");
+})
+
+})
+}

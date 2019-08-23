@@ -1,4 +1,4 @@
-<!--Homepage-->
+<!--Saved Articles Page with Notes-->
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -10,17 +10,17 @@
         <li class="nav-item">
           <a class="btn btn-success scrape-new" href="scrape">Scrape</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" active>
           <a class="btn btn-info scrape-new" href="saved">Saved Articles</a>
         </li>
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="btn btn-danger scrape-new" href="/">Home <span class="sr-only">(current)</span></a>
         </li>
       </ul>
     </div>
   </nav>
  
-  <h1>Mongo/Cheerio Scraping from <img src="/assets/images/theOnion.jpg"></h1>
+  <h1>Saved Articles from <img src="/assets/images/theOnion.jpg"></h1>
     {{#each scrapedData}}
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -30,9 +30,9 @@
           <p> {{this.img}}</p>
           <a href={{this.URL}} target="_blank">{{this.URL}}</a>
           <br>
-          <button type="button" class="btn btn-success save" data-id={{this._id}}>Save Article</button>
+          <button type="button" class="btn btn-danger save" data-id={{this._id}}>Delete Article</button>
           <br><br>
         </div>
       </div>
     {{/each}}
-    <script src="../../public/assets/index.js"></script>
+    <script src="../../public/assets/saved.js"></script>
