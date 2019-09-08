@@ -1,7 +1,7 @@
 body {
     text-align: center;
     font-family: 'Abril Fatface', cursive;
-    background-image: url("images/onions.jpg");
+    background-image: url("../assets/images/onions.jpg");
   }
   h1 {
     font-size: 48px;

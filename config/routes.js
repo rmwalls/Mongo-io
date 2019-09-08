@@ -24,8 +24,10 @@ const db = mongojs(databaseUrl, collections);
   console.log("Database Error:", error);
 });
 
+// ROUTES +++++++++++++++++++++++++++++++++++++++++
+
 module.exports = function(app) {
-  // Default route 
+  // Default route, display what's in the database
   app.get("/", function(req, res) {
     // Retrieve articles from db
     db.scrapedData.find({}, function(err, scrapedData) {
@@ -34,8 +36,108 @@ module.exports = function(app) {
       console.log("data returned from db");
     }); //end find
   
+//Route for getting a specific article by id and corresponding note
+app.get("/articles/:id", function (req, res) {
+  db.Article.findOne({
+          _id: req.params.id
+      })
+      .populate("note")
+      .then(function (dbArticle) {
+          res.json(dbArticle)
+      })
+      .catch(function (err) {
+          res.json(err);
+      });
+});
+
+//Route for saving/updating an article to be saved
+app.post("/saved/:id", function (req, res) {
+  db.Article
+      .findByIdAndUpdate({
+          _id: req.params.id
+      }, {
+          isSaved: true
+      })
+      .then(function (dbArticle) {
+          res.json(dbArticle);
+          console.log(dbArticle)
+      })
+      .catch(function (err) {
+          res.json(err);
+      });
+});
+
+//Route for Unsaving/updating an article to be saved
+app.post("/Unsaved/:id", function (req, res) {
+  db.Article
+      .findByIdAndUpdate({
+          _id: req.params.id
+      }, {
+          isSaved: false
+      })
+      .then(function (dbArticle) {
+          res.json(dbArticle);
+          console.log(dbArticle)
+      })
+      .catch(function (err) {
+          res.json(err);
+      });
+});
+
+
+//Route for saving/updating an articles note
+app.post("/savedNote/:id", function (req, res) {
+  db.Note.create(req.body)
+      .then(function (dbNote) {
+          return db.Article.findOneAndUpdate({
+              _id: req.params.id
+          }, {
+              note: dbNote._id
+          }, {
+              new: true
+          });
+      })
+      .then(function (dbArticle) {
+          res.json(dbArticle);
+      })
+      .catch(function (err) {
+          res.json(err);
+      })
+})
+
+//Route for getting saved article
+app.get("/savedArticles", function (req, res) {
+  db.Article.find({
+      "isSaved": true
+  }, function (error, data) {
+      var hbsObject = {
+          article: data
+      };
+      console.log(hbsObject);
+      res.render("saved", hbsObject);
+  });
+});
+
+//Route for deleting/updating saved article
+app.put("/delete/:id", function (req, res) {
+  db.Article
+      .findByIdAndUpdate({
+          _id: req.params.id
+      }, {
+          $set: {
+              isSaved: false
+          }
+      })
+      .then(function (dbArticle) {
+          res.json(dbArticle);
+      })
+      .catch(function (err) {
+          res.json(err);
+      });
+});
+
   // Scrape data from The Onion and save it into the mongo db
-  app.get("/scrape", function(req, res) {
+  app.get("/newscrape", function(req, res) {
     axios.get("https://www.theonion.com/c/news-in-brief").then(function(response) {
       console.log("inside axios.get");
       const $ = cheerio.load(response.data); // Load the html body from axios into cheerio
@@ -71,10 +173,11 @@ module.exports = function(app) {
           });
         } // end top if
       });
+      res.render("newscrape", scrapedData);
     });  //end axios get
   
-    // Send a "Scrape Complete" message to the browser
-    res.send("Scrape could be Complete");
+    // Send a "Scrape Complete" message to the console
+    console.log ("Scrape could be Complete");
   }) //end of scrape route
 
 
@@ -82,6 +185,5 @@ module.exports = function(app) {
   app.get("/saved", function(req, res) {
     res.render("saved");
 })
-
 })
 }

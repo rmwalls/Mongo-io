@@ -31,7 +31,7 @@ app.use(router);
 // Import the routes
 require("./config/routes.js")(app);
 
-console.log("line 49 server.js")
+console.log("line 34 server.js")
 
 // Listen on port 3000
 app.listen(3000, function() {

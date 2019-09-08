@@ -1,6 +1,16 @@
-/* Note Taker (18.2.6)
- * front-end
- * ==================== */
+// functions needed by the application
+
+//use JS date formatting to make readable date
+const formatDate = function () {
+  const d = new Date();
+  const formattedDate = "";
+  formattedDate += (d.getMonth() + 1) + "-";
+  formattedDate += d.getDate() + "-";
+  formattedDate += d.getFullYear();
+  console.log("formatted date = " + formattedDate);
+  return formattedDate;
+};
+module.exports = formatDate;
 
 // Loads results onto the page
 function getResults() {
