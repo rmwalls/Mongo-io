@@ -9,10 +9,6 @@ const exphbs = require("express-handlebars");
 const logger = require("morgan");
 console.log("line 10 routes.js")
 
-// If deployed, use the deployed database. Otherwise use the local database
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/articlescraper";
-//mongoose.connect(MONGODB_URI);
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 // Database configuration
 const databaseUrl = "articlescraper";

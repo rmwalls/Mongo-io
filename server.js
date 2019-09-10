@@ -8,6 +8,12 @@ var mongoose = require("mongoose");
 var exphbs = require("express-handlebars");
 var logger = require("morgan");
 
+// If deployed, use the deployed database. Otherwise use the local database
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/articlescraper";
+//mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
+
+
 // Initialize Express 
 var app = express();
 app.use(logger("dev"));
