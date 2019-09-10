@@ -33,9 +33,9 @@ module.exports = function(app) {
   // Default route, display what's in the database
   app.get("/", function(req, res) {
     // Retrieve articles from db
-    db.scrapedData.find({}, function(err, scrapedData) {
-      var hbsObj = {scrapedData};
-      res.render("onionScraping", hbsObj)
+    db.Article.find({}, function(err, result) {
+      var hbsObj =
+      res.render("onionScraping", { scrapedData: result })
       console.log("data returned from db");
     }); //end find
   
