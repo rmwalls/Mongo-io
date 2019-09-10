@@ -10,6 +10,7 @@ var logger = require("morgan");
 
 // If deployed, use the deployed database. Otherwise use the local database
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/articlescraper";
+const PORT = process.env.PORT || 3000;
 //mongoose.connect(MONGODB_URI);
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
@@ -40,6 +41,6 @@ require("./config/routes.js")(app);
 console.log("line 34 server.js")
 
 // Listen on port 3000
-app.listen(3000, function() {
+app.listen(PORT, function() {
   console.log("App running on port 3000");
 });
