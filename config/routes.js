@@ -26,6 +26,7 @@ const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/articlescrap
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 const db = require('../models');
+console.log(db.Article.save);
 
 // ROUTES +++++++++++++++++++++++++++++++++++++++++
 
@@ -144,6 +145,7 @@ app.put("/delete/:id", function (req, res) {
     axios.get("https://www.theonion.com/c/news-in-brief").then(function(response) {
       console.log("inside axios.get");
       const $ = cheerio.load(response.data); // Load the html body from axios into cheerio
+      const articles = [];
 
       // Save the headline and href of each article
       $("article").each(function(i, element) { 
@@ -154,33 +156,33 @@ app.put("/delete/:id", function (req, res) {
         //const str = img;
         //const words = str.split(' ');
         //console.log(words[0]);
-        const articles = [];
+       
 
         console.log("scraped stuff " + "HEADLINE: " + headline + " STORY URL: " + url);
         // If this found element had both a title and a link
         if (headline && url) {
           // Insert the data in the scrapedData db
-          db.Article.save({
-            Headline: headline,
-            URL: url,
+          const article = new db.Article({
+            headline: headline || 'headline unavailable',
+            url: url || 'url not available',
             created: Date.now()
-          },
-          function(err, inserted) {
+          })
+
+          article.save(function(err) {
             if (err) {
               // Log the error if one is encountered during the query
               console.log("error is " + err);
             }
             else {
               // Otherwise, log the inserted data
-              articles.push(inserted);
-              console.log("data inserted into DB" + inserted);
+              articles.push(article);
+              console.log("data inserted into DB");
             }
           });
         } // end top if
       });
-      res.render("newscrape", {
-        scrapedData: articles
-      });
+      console.log('---------------------', articles);
+      res.send('Scrape Complete change the URL to go to / and you will see the articles');
     });  //end axios get
   
     // Send a "Scrape Complete" message to the console

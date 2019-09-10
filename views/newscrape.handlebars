@@ -24,15 +24,14 @@
     {{#each scrapedData}}
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h4>{{this.Headline}}</h4>
+          <h4>{{this.headline}}</h4>
         </div>
         <div class="panel-body">
           <p> {{this.img}}</p>
-          <a href={{this.URL}} target="_blank">{{this.URL}}</a>
+          <a href={{this.url}} target="_blank">{{this.url}}</a>
           <br>
           <button type="button" class="btn btn-success save" data-id={{this._id}}>Save Article</button>
           <br><br>
         </div>
       </div>
     {{/each}}
-    <script src="../assets/index.js"></script>
