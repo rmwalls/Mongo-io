@@ -8,11 +8,8 @@ var mongoose = require("mongoose");
 var exphbs = require("express-handlebars");
 var logger = require("morgan");
 
-// If deployed, use the deployed database. Otherwise use the local database
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/articlescraper";
+
 const PORT = process.env.PORT || 3000;
-//mongoose.connect(MONGODB_URI);
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 
 // Initialize Express 
@@ -42,5 +39,5 @@ console.log("line 34 server.js")
 
 // Listen on port 3000
 app.listen(PORT, function() {
-  console.log("App running on port 3000");
+  console.log("App running on port " + PORT);
 });

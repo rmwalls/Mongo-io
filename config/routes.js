@@ -1,7 +1,7 @@
 // This file handles the routes for the Articles
 // DEPENDENCIES
 const express = require("express");
-const mongojs = require("mongojs");
+// const mongojs = require("mongojs");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const mongoose = require("mongoose");
@@ -10,15 +10,22 @@ const logger = require("morgan");
 console.log("line 10 routes.js")
 
 
-// Database configuration
-const databaseUrl = "articlescraper";
-const collections = ["scrapedData"];
+// // Database configuration
+// const databaseUrl = "articlescraper";
+// const collections = ["scrapedData"];
 
-// Hook mongojs configuration to the db constiable
-const db = mongojs(databaseUrl, collections);
-  db.on("error", function(error) {
-  console.log("Database Error:", error);
-});
+// // Hook mongojs configuration to the db constiable
+// const db = mongojs(databaseUrl, collections);
+//   db.on("error", function(error) {
+//   console.log("Database Error:", error);
+// });
+
+// If deployed, use the deployed database. Otherwise use the local database
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/articlescraper";
+//mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
+
+const db = require('../models');
 
 // ROUTES +++++++++++++++++++++++++++++++++++++++++
 
@@ -147,12 +154,13 @@ app.put("/delete/:id", function (req, res) {
         //const str = img;
         //const words = str.split(' ');
         //console.log(words[0]);
+        const articles = [];
 
         console.log("scraped stuff " + "HEADLINE: " + headline + " STORY URL: " + url);
         // If this found element had both a title and a link
         if (headline && url) {
           // Insert the data in the scrapedData db
-          db.scrapedData.save({
+          db.Article.save({
             Headline: headline,
             URL: url,
             created: Date.now()
@@ -164,12 +172,15 @@ app.put("/delete/:id", function (req, res) {
             }
             else {
               // Otherwise, log the inserted data
+              articles.push(inserted);
               console.log("data inserted into DB" + inserted);
             }
           });
         } // end top if
       });
-      res.render("newscrape", scrapedData);
+      res.render("newscrape", {
+        scrapedData: articles
+      });
     });  //end axios get
   
     // Send a "Scrape Complete" message to the console
