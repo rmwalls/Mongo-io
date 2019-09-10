@@ -182,7 +182,7 @@ app.put("/delete/:id", function (req, res) {
         } // end top if
       });
       console.log('---------------------', articles);
-      res.send('Scrape Complete change the URL to go to / and you will see the articles');
+      res.send('Scrape Complete. Synchronicity says change the URL to go to / and you will see the articles');
     });  //end axios get
   
     // Send a "Scrape Complete" message to the console
